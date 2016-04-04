@@ -26,7 +26,6 @@
 #endregion
 
 using System;
-using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
@@ -51,7 +50,7 @@ namespace WakeOnLanClient
                 {
                     endProgram("Please enter a valid number of attempts");
                 }
-                if (attempts < 0)
+                if (attempts <= 0)
                 {
                     endProgram("Please enter a valid number of attempts");
                 }
@@ -59,7 +58,7 @@ namespace WakeOnLanClient
                 {
                     endProgram("Please enter a valid number for sleep time");
                 }
-                if (sleepTime < 0)
+                if (sleepTime <= 0)
                 {
                     endProgram("Please enter a valid number for sleep time");
                 }
@@ -68,7 +67,7 @@ namespace WakeOnLanClient
             }
             else
             {
-                endProgram("Incorrect number of arguments \nFormat = 'Number of attempts, wait time(ms), MAC Address (xx:xx:xx:xx:xx:xx), IP Address");
+                endProgram("Incorrect number of arguments \nFormat = 'Number of attempts, wait time(ms), MAC Address (xx:xx:xx:xx:xx:xx), IP Address (xxx.xxx.xxx.xxx)");
             }
             
             attempts--;
@@ -79,7 +78,8 @@ namespace WakeOnLanClient
                 Console.WriteLine(targetMacAddress);
                 WakeOnLan(macAddress);
                 Console.WriteLine("Device should now be booting up");
-                Console.WriteLine("Waiting 10s for device to boot");
+                int sleepTimeSeconds = (int)(sleepTime / 1000);
+                Console.Write("Waiting " + sleepTimeSeconds.ToString() + "s for device to boot\n");
                 Thread.Sleep(sleepTime);
                 Console.WriteLine("Attempting to ping device");
                 string s = PingHost(targetIPAddress);
